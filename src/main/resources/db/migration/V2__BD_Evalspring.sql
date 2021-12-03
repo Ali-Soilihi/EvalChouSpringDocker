@@ -21,21 +21,31 @@ INSERT INTO Collaborater(lastName, firstName, function) VALUES
 ('VANGHELUWE', 'Léa', 'Genius');
 --*****************************************************************
 --Des liste de taches
-INSERT INTO TaskList(TaskList_Name,taskList) VALUES
-('Torture', 1);
-INSERT INTO TaskList(TaskList_Name,taskList) VALUES
-('Recolte', 2);
-INSERT INTO TaskList(TaskList_Name,taskList) VALUES
-('VOL', 3);
-INSERT INTO TaskList(TaskList_Name,taskList) VALUES
-('Sauver', 4);
+INSERT INTO TaskList(TaskList_Name) VALUES
+('Torture');
+INSERT INTO TaskList(TaskList_Name) VALUES
+('Recolte');
+INSERT INTO TaskList(TaskList_Name) VALUES
+('VOL');
+INSERT INTO TaskList(TaskList_Name) VALUES
+('Sauver');
 --*****************************************************************
 --Des liste de taches
-INSERT INTO TaskList(title,description,priority,realized,taskList,collaborater) VALUES
-('Tuer','tuer,piller,demenber,dancer','LOW',true,0, NULL);
-INSERT INTO TaskList(title,description,priority,status,taskList,collaborater) VALUES
-('taxer','extorquer,mentir,arnaquer','HIGH',true,3, NULL);
-INSERT INTO TaskList(title,description,priority,status,taskList,collaborater) VALUES
-('Tuer','tuer,piller,demenber,dancer','MEDIUM',true,0, NULL);
-INSERT INTO TaskList(title,description,priority,status,taskList,collaborater) VALUES
-('Aimer','fleur,papillon,bisou','HIGH',false,4, NULL);
+INSERT INTO Task(title,description,priority,realized) VALUES
+('Tuer','tuer,piller,demenber,dancer','LOW',true);
+INSERT INTO Task(title,description,priority,realized) VALUES
+('taxer','extorquer,mentir,arnaquer','HIGH',true);
+INSERT INTO Task(title,description,priority,realized) VALUES
+('Tuer','tuer,piller,demenber,dancer','MEDIUM',true);
+INSERT INTO Task(title,description,priority,realized) VALUES
+('Aimer','fleur,papillon,bisou','HIGH',false);
+INSERT INTO Task(title,description,priority,realized) VALUES
+('wow','lol,heastone,dbz','LOW',false);
+INSERT INTO Task(title,description,priority,realized) VALUES
+('roman','lovcraft,aneau du segneur,grrrr','LOW',false);
+
+
+
+
+-- DROP SCHEMA public CASCADE;
+-- CREATE SCHEMA public;
