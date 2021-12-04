@@ -10,8 +10,6 @@ public class TaskList {
     private Integer tasklist_id;
     @Column(name = "TaskList_name")
     private String TaskListName;
-
-
     @OneToMany(fetch = FetchType.LAZY,targetEntity=Task.class, mappedBy= "tasklist_id")
     private List<Task> task_list_box;
 

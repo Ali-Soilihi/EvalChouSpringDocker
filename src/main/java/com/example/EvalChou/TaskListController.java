@@ -18,7 +18,7 @@ public class TaskListController {
 
     @GetMapping("/all")
     public List<TaskList> getall(){
-
+//      actuelement impossible de cherché les donné en BDD a causse des clé etrangére des table task/tasklist
         taskLists=taskListRepository.findAll();
 
 
@@ -30,7 +30,7 @@ public class TaskListController {
     public TaskList addTasklist(@RequestBody TaskList taskList){
 
 //       verification si la liste envoyer dans le post n'est pas en BDD
-        /* la ligne suivante crée une exeption qui arret l'application*/
+        /* la ligne suivante crée une exeption qui arret la methode renvoie une erreur */
         taskLists=taskListRepository.findAll();
         for(TaskList tasklistBDD:taskLists){
             if(tasklistBDD.getTaskListName().equals(taskList.getTaskListName())){
@@ -52,7 +52,7 @@ public class TaskListController {
 
         }
 
-//      ce retour ser a rien mais au cas ou on aura juste une liste vide
+//      ce retour sert a rien mais au cas ou on aura juste une liste vide
         return taskList;
     }
 

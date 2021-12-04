@@ -19,7 +19,7 @@ public class TaskController {
 
     @GetMapping("/all")
     public List<Task> getall(){
-
+//      actuelement impossible de cherché les donné en BDD a causse des clé etrangére des table task/tasklist
         tasks=taskRepository.findAll();
 
 
@@ -32,11 +32,11 @@ public class TaskController {
 
 
 //       verification si la tache envoyer dans le post n'est pas en BDD
-        /* la ligne suivante crée une exeption qui arret l'application*/
+        /* la ligne suivante crée une exeption qui arret la methode renvoie une erreur */
         tasks=taskRepository.findAll();
         for(Task taskBDD:tasks){
-            //pas la metode equals a été overide il prend tous sauf les id avec forenkey inclus
-            if(task.equals(task)){
+            //la methode equals a été overide il prend tous sauf les id avec forenkey inclus
+            if(taskBDD.equals(task)){
 
                 return  null;
             }
@@ -55,7 +55,7 @@ public class TaskController {
 
         }
 
-//      ce retour ser a rien mais au cas ou on aura juste une liste vide
+//      ce retour ser a rien mais au cas ou on aura juste une objet vide
         return task;
     }
 
