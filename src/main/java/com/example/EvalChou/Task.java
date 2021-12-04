@@ -1,6 +1,7 @@
 package com.example.EvalChou;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Task {
@@ -12,14 +13,26 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Priority priority;
     private Boolean realized;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tasklist_id")
     private TaskList tasklist_id;
-
     @OneToOne
     @JoinColumn(name = "collaborater_id")
     private Collaborater collaborater_id;
+
+//overide equals pour prendre en compte tous sauf les id
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return title.equals(task.title) && description.equals(task.description) && priority == task.priority && realized.equals(task.realized);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, description, priority, realized);
+    }
 
     public Integer getTask_id() {
         return task_id;
@@ -89,4 +102,6 @@ public class Task {
                 ", collaborater=" + collaborater_id +
                 '}';
     }
+
+
 }
