@@ -1,5 +1,7 @@
 package com.example.EvalChou;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -7,26 +9,26 @@ import java.util.List;
 public class TaskList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "taskListId")
-    private Integer taskListId;
-    private String taskListName;
-    @OneToMany(fetch = FetchType.LAZY,targetEntity=Task.class, mappedBy= "taskListId")
+    private Integer id;
+    private String task_list_name;
+    @OneToMany(fetch = FetchType.LAZY,targetEntity=Task.class, mappedBy= "id")
+    @JsonIgnore
     private List<Task> taskListBox;
 
-    public Integer getTaskListId() {
-        return taskListId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setTaskListId(Integer taskListId) {
-        this.taskListId = taskListId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getTaskListName() {
-        return taskListName;
+    public String getTask_list_name() {
+        return task_list_name;
     }
 
-    public void setTaskListName(String taskListName) {
-        this.taskListName = taskListName;
+    public void setTask_list_name(String task_list_name) {
+        this.task_list_name = task_list_name;
     }
 
     public List<Task> getTaskListBox() {
@@ -40,8 +42,8 @@ public class TaskList {
     @Override
     public String toString() {
         return "TaskList{" +
-                "id=" + taskListId +
-                ", name='" + taskListName + '\'' +
+                "id=" + id +
+                ", name='" + task_list_name + '\'' +
                 ", taskList=" + taskListBox +
                 '}';
     }

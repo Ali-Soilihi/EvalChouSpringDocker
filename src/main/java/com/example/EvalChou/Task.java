@@ -1,5 +1,7 @@
 package com.example.EvalChou;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -7,8 +9,7 @@ import java.util.Objects;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "taskId")
-    private Integer taskId;
+    private Integer id;
     private String title;
     private String description;
     @Enumerated(EnumType.STRING)
@@ -16,10 +17,11 @@ public class Task {
     private Boolean realized;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "taskListId")
-    private TaskList taskListId;
+    @JsonIgnore
+    private TaskList task_list_id;
     @OneToOne
-    @JoinColumn(name = "collaboraterId")
-    private Collaborater collaboraterId;
+    @JoinColumn(name = "collaborater_id")
+    private Collaborater collaborater_id;
 
     //overide equals pour prendre en compte tous sauf les id
     @Override
@@ -35,12 +37,12 @@ public class Task {
         return Objects.hash(title, description, priority, realized);
     }
 
-    public Integer getTaskId() {
-        return taskId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setTaskId(Integer taskId) {
-        this.taskId = taskId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -75,32 +77,32 @@ public class Task {
         this.realized = realized;
     }
 
-    public TaskList getTaskListId() {
-        return taskListId;
+    public TaskList getTask_list_id() {
+        return task_list_id;
     }
 
-    public void setTaskListId(TaskList taskListId) {
-        this.taskListId = taskListId;
+    public void setTask_list_id(TaskList task_list_id) {
+        this.task_list_id = task_list_id;
     }
 
-    public Collaborater getCollaboraterId() {
-        return collaboraterId;
+    public Collaborater getCollaborater_id() {
+        return collaborater_id;
     }
 
-    public void setCollaboraterId(Collaborater collaboraterId) {
-        this.collaboraterId = collaboraterId;
+    public void setCollaborater_id(Collaborater collaborater_id) {
+        this.collaborater_id = collaborater_id;
     }
 
     @Override
     public String toString() {
         return "Task{" +
-                "id=" + taskId +
+                "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", priority=" + priority +
                 ", realized=" + realized +
-                ", taskList=" + taskListId +
-                ", collaborater=" + collaboraterId +
+                ", taskList=" + task_list_id +
+                ", collaborater=" + collaborater_id +
                 '}';
     }
 

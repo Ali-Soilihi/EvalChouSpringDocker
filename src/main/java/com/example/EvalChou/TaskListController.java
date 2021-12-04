@@ -33,7 +33,7 @@ public class TaskListController {
         /* la ligne suivante crée une exeption qui arret la methode renvoie une erreur */
         taskLists=taskListRepository.findAll();
         for(TaskList tasklistBDD:taskLists){
-            if(tasklistBDD.getTaskListName().equals(taskList.getTaskListName())){
+            if(tasklistBDD.getTask_list_name().equals(taskList.getTask_list_name())){
 
                 return  null;
             }
@@ -45,7 +45,7 @@ public class TaskListController {
 //        deuxieme requette pour aller chercher le j.son propre et remplis
         taskLists=taskListRepository.findAll();
         for(TaskList tasklistBDD:taskLists){
-            if(tasklistBDD.getTaskListName().equals(taskList.getTaskListName())){
+            if(tasklistBDD.getTask_list_name().equals(taskList.getTask_list_name())){
 //              renvoie du json propre propre et remplis
                return tasklistBDD;
             }
