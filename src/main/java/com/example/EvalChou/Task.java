@@ -6,15 +6,14 @@ import javax.persistence.*;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Task_id")
-    private Integer id;
+    private Integer task_id;
     private String title;
     private String description;
     @Enumerated(EnumType.STRING)
     private Priority priority;
     private Boolean realized;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tasklist_id")
     private TaskList tasklist_id;
 
@@ -22,12 +21,12 @@ public class Task {
     @JoinColumn(name = "collaborater_id")
     private Collaborater collaborater_id;
 
-    public Integer getId() {
-        return id;
+    public Integer getTask_id() {
+        return task_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setTask_id(Integer task_id) {
+        this.task_id = task_id;
     }
 
     public String getTitle() {
@@ -81,7 +80,7 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                "id=" + id +
+                "id=" + task_id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", priority=" + priority +

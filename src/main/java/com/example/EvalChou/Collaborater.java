@@ -6,8 +6,7 @@ import javax.persistence.*;
 public class Collaborater {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Collaborater_id")
-    private Integer id;
+    private Integer collaborater_id;
     @Column(name = "last_name")
     private String lastName;
     @Column(name = "first_name")
@@ -16,12 +15,12 @@ public class Collaborater {
     @Transient
     private TaskList taskList;
 
-    public Integer getId() {
-        return id;
+    public Integer getCollaborater_id() {
+        return collaborater_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCollaborater_id(Integer collaborater_id) {
+        this.collaborater_id = collaborater_id;
     }
 
     public String getLastName() {
@@ -59,7 +58,7 @@ public class Collaborater {
     @Override
     public String toString() {
         return "Collaborater{" +
-                "id=" + id +
+                "id=" + collaborater_id +
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", function='" + function + '\'' +

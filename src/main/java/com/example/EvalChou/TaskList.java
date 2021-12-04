@@ -7,19 +7,20 @@ import java.util.List;
 public class TaskList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TaskList_id")
-    private Integer id;
+    private Integer tasklist_id;
     @Column(name = "TaskList_name")
     private String TaskListName;
-    @OneToMany(targetEntity=Task.class, mappedBy= "tasklist_id")
-    private List<Task> tasks;
 
-    public Integer getId() {
-        return id;
+
+    @OneToMany(fetch = FetchType.LAZY,targetEntity=Task.class, mappedBy= "tasklist_id")
+    private List<Task> task_list_box;
+
+    public Integer getTasklist_id() {
+        return tasklist_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setTasklist_id(Integer tasklist_id) {
+        this.tasklist_id = tasklist_id;
     }
 
     public String getTaskListName() {
@@ -30,20 +31,20 @@ public class TaskList {
         this.TaskListName = taskListName;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
+    public List<Task> getTask_list_box() {
+        return task_list_box;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+    public void setTask_list_box(List<Task> task_list_box) {
+        this.task_list_box = task_list_box;
     }
 
     @Override
     public String toString() {
         return "TaskList{" +
-                "id=" + id +
+                "id=" + tasklist_id +
                 ", name='" + TaskListName + '\'' +
-                ", taskList=" + tasks +
+                ", taskList=" + task_list_box +
                 '}';
     }
 }
