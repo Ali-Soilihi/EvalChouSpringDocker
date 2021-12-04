@@ -6,21 +6,20 @@ import javax.persistence.*;
 public class Collaborater {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer collaborater_id;
-    @Column(name = "last_name")
+    @Column(name = "collaboraterId")
+    private Integer collaboraterId;
     private String lastName;
-    @Column(name = "first_name")
     private String firstName;
     private String function;
-    @Transient
-    private TaskList taskList;
+//    @Transient
+//    private TaskList taskList;
 
-    public Integer getCollaborater_id() {
-        return collaborater_id;
+    public Integer getCollaboraterId() {
+        return collaboraterId;
     }
 
-    public void setCollaborater_id(Integer collaborater_id) {
-        this.collaborater_id = collaborater_id;
+    public void setCollaboraterId(Integer collaboraterId) {
+        this.collaboraterId = collaboraterId;
     }
 
     public String getLastName() {
@@ -47,22 +46,13 @@ public class Collaborater {
         this.function = function;
     }
 
-    public TaskList getTaskList() {
-        return taskList;
-    }
-
-    public void setTaskList(TaskList taskList) {
-        this.taskList = taskList;
-    }
-
     @Override
     public String toString() {
         return "Collaborater{" +
-                "id=" + collaborater_id +
+                "collaboraterId=" + collaboraterId +
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", function='" + function + '\'' +
-                ", taskList=" + taskList +
                 '}';
     }
 }

@@ -7,42 +7,42 @@ import java.util.List;
 public class TaskList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer tasklist_id;
-    @Column(name = "TaskList_name")
-    private String TaskListName;
-    @OneToMany(fetch = FetchType.LAZY,targetEntity=Task.class, mappedBy= "tasklist_id")
-    private List<Task> task_list_box;
+    @Column(name = "taskListId")
+    private Integer taskListId;
+    private String taskListName;
+    @OneToMany(fetch = FetchType.LAZY,targetEntity=Task.class, mappedBy= "taskListId")
+    private List<Task> taskListBox;
 
-    public Integer getTasklist_id() {
-        return tasklist_id;
+    public Integer getTaskListId() {
+        return taskListId;
     }
 
-    public void setTasklist_id(Integer tasklist_id) {
-        this.tasklist_id = tasklist_id;
+    public void setTaskListId(Integer taskListId) {
+        this.taskListId = taskListId;
     }
 
     public String getTaskListName() {
-        return TaskListName;
+        return taskListName;
     }
 
     public void setTaskListName(String taskListName) {
-        this.TaskListName = taskListName;
+        this.taskListName = taskListName;
     }
 
-    public List<Task> getTask_list_box() {
-        return task_list_box;
+    public List<Task> getTaskListBox() {
+        return taskListBox;
     }
 
-    public void setTask_list_box(List<Task> task_list_box) {
-        this.task_list_box = task_list_box;
+    public void setTaskListBox(List<Task> taskListBox) {
+        this.taskListBox = taskListBox;
     }
 
     @Override
     public String toString() {
         return "TaskList{" +
-                "id=" + tasklist_id +
-                ", name='" + TaskListName + '\'' +
-                ", taskList=" + task_list_box +
+                "id=" + taskListId +
+                ", name='" + taskListName + '\'' +
+                ", taskList=" + taskListBox +
                 '}';
     }
 }

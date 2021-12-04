@@ -1,39 +1,39 @@
 
 -- Création de la table Collaborater
 CREATE TABLE Collaborater(
-    collaborater_id serial PRIMARY KEY,
-    first_name varchar,
-    last_name varchar,
+    collaboraterId serial PRIMARY KEY,
+    lastName varchar,
+    firstName varchar,
     function varchar
 
 );
 
 -- Création de la table tache
 CREATE TABLE Task(
-task_id serial PRIMARY KEY,
+taskId serial PRIMARY KEY,
 title varchar,
 description varchar,
 priority varchar,
 realized BOOLEAN NOT NULL DEFAULT FALSE,
-tasklist_id int,
-collaborater_id int
+taskListId int,
+collaboraterId int
 
 );
 
 -- Création de la table Liste de taches
 CREATE TABLE TaskList(
-tasklist_id serial PRIMARY KEY,
-TaskList_name varchar,
-task_list_box int
+taskListId serial PRIMARY KEY,
+taskListName varchar,
+taskListBox int
 
 );
 
 -- CCreate foreign keys for table Task : TaskList_id et Collaborater_id
-ALTER TABLE Task ADD CONSTRAINT fk_taskList FOREIGN KEY (tasklist_id) REFERENCES TaskList(tasklist_id);
-ALTER TABLE Task ADD CONSTRAINT fk_collaborater FOREIGN KEY (collaborater_id) REFERENCES Collaborater(collaborater_id);
+ALTER TABLE Task ADD CONSTRAINT fk_taskList FOREIGN KEY (taskListId) REFERENCES TaskList(taskListId);
+ALTER TABLE Task ADD CONSTRAINT fk_collaborater FOREIGN KEY (collaboraterId) REFERENCES Collaborater(collaboraterId);
 
 -- CCreate foreign keys for table TaskList : taskList
-ALTER TABLE TaskList ADD CONSTRAINT fk_taskList FOREIGN KEY (task_list_box) REFERENCES Task(task_id);
+ALTER TABLE TaskList ADD CONSTRAINT fk_taskList FOREIGN KEY (taskListBox) REFERENCES Task(taskId);
 -- DROP SCHEMA public CASCADE;
 -- CREATE SCHEMA public;
 

@@ -1,48 +1,49 @@
---UPDATE les de taches
-UPDATE  TaskList
-SET
-task_list_box=1
-WHERE tasklist_id=1;
-
-UPDATE  TaskList
-SET
-task_list_box=2
-WHERE tasklist_id=2;
-
-UPDATE  TaskList
-SET
-task_list_box=3
-WHERE tasklist_id=3;
-
-UPDATE  TaskList
-SET
-task_list_box=4
-WHERE tasklist_id=4;
---*****************************************************************
 --UPDATE liste de taches
-UPDATE  Task
+UPDATE  TaskList
 SET
-tasklist_id=1,
-collaborater_id=NULL
-WHERE task_id=1;
+taskListBox=1
+WHERE taskListId=1;
+
+UPDATE  TaskList
+SET
+taskListBox=2
+WHERE taskListId=2;
+
+UPDATE  TaskList
+SET
+taskListBox=3
+WHERE taskListId=3;
+
+UPDATE  TaskList
+SET
+taskListBox=4
+WHERE taskListId=4;
+--*****************************************************************
+--UPDATE les de taches
 
 UPDATE  Task
 SET
-tasklist_id=2,
-collaborater_id=NULL
-WHERE task_id=2;
+taskListId=1,
+collaboraterId=NULL
+WHERE taskId=1;
 
 UPDATE  Task
 SET
-tasklist_id=3,
-collaborater_id=NULL
-WHERE task_id=3;
+taskListId=2,
+collaboraterId=NULL
+WHERE taskId=2;
 
 UPDATE  Task
 SET
-tasklist_id=4,
-collaborater_id=NULL
-WHERE task_id=4;
+taskListId=3,
+collaboraterId=NULL
+WHERE taskId=3;
+
+UPDATE  Task
+SET
+taskListId=4,
+collaboraterId=NULL
+WHERE taskId=4;
 
 
 
