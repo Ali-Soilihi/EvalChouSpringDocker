@@ -1,5 +1,7 @@
 package com.example.EvalChou.controller;
 
+
+import com.example.EvalChou.model.Task;
 import com.example.EvalChou.model.TaskList;
 import com.example.EvalChou.repository.TaskListRepository;
 import org.springframework.web.bind.annotation.*;
@@ -20,21 +22,37 @@ public class TaskListController {
 
     @GetMapping("/all")
     public List<TaskList> getall(){
-//      actuelement impossible de cherché les donné en BDD a causse des clé etrangére des table task/tasklist
+
         taskLists=taskListRepository.findAll();
 
 
         return taskLists;
     }
 
+    @GetMapping("{id}/taskListBox")
+
+    public List<Task> gettaskListBox(@PathVariable("id") Integer idtaskList){
+        List<Task> taskListBoxremider=new ArrayList<>();
+
+        taskLists=taskListRepository.findAll();
+        for(TaskList tasklistBDD:taskLists){
+            if(tasklistBDD.getId().equals(idtaskList)){
+                taskListBoxremider=tasklistBDD.getTaskListBox();
+            }
+
+        }
+
+
+        return taskListBoxremider;
+    }
+
 
 
     @PostMapping("/register")
-//    ce post enregistre la TaskList en BDD puis recherche une deuxieme fois dans la bdd et renvoie la liste enregistré
+
     public TaskList addTasklist(@RequestBody TaskList taskList){
 
-//       verification si la liste envoyer dans le post n'est pas en BDD
-        /* la ligne suivante crée une exeption qui arret la methode renvoie une erreur */
+
         taskLists=taskListRepository.findAll();
         for(TaskList tasklistBDD:taskLists){
             if(tasklistBDD.getTask_list_name().equals(taskList.getTask_list_name())){
@@ -43,20 +61,20 @@ public class TaskListController {
             }
 
         }
-//      enregistrement en BDD
+
         taskListRepository.save(taskList);
 
-//        deuxieme requette pour aller chercher le j.son propre et remplis
+
         taskLists=taskListRepository.findAll();
         for(TaskList tasklistBDD:taskLists){
             if(tasklistBDD.getTask_list_name().equals(taskList.getTask_list_name())){
-//              renvoie du json propre propre et remplis
+
                return tasklistBDD;
             }
 
         }
 
-//      ce retour sert a rien mais au cas ou on aura juste une liste vide
+
         return taskList;
     }
 
