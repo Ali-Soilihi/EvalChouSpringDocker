@@ -11,9 +11,9 @@
 #5-Je veux pouvoir supprimer une tâche.
 -fait
 #6-Je veux pouvoir récupérer toutes les tâches d'une liste donnée en paramètre, triées dans l'ordre de priorité, avec un paramètre me permettant de dire si je veux également les tâches réalisées
--en cours
+-ABANDONER
 #7-Je veux pouvoir supprimer une liste de tâches. Si la liste n'est pas vide, je vous laisse le choix : supprimer la liste et toutes les tâches associées, ou renvoyer un message avec une erreur 400 "La liste doit être vide avant d'être supprimée".
--en cours
+-ABANDONER
 #8-Je souhaite pouvoir créer ou supprimer un collaborateur (qui a un prénom, un nom, une fonction dans l'entreprise)
 -en cours
 #9-Je souhaite pouvoir assigner la tâche à un collaborateur ou à l'inverse indiquer qu'elle n'est assignée à personne
