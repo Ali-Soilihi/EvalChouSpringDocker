@@ -1,7 +1,8 @@
-package com.example.EvalChou;
+package com.example.EvalChou.controller;
 
+import com.example.EvalChou.model.Collaborater;
+import com.example.EvalChou.repository.CollaboraterRepository;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

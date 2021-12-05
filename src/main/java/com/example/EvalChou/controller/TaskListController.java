@@ -1,5 +1,7 @@
-package com.example.EvalChou;
+package com.example.EvalChou.controller;
 
+import com.example.EvalChou.model.TaskList;
+import com.example.EvalChou.repository.TaskListRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -24,6 +26,8 @@ public class TaskListController {
 
         return taskLists;
     }
+
+
 
     @PostMapping("/register")
 //    ce post enregistre la TaskList en BDD puis recherche une deuxieme fois dans la bdd et renvoie la liste enregistré

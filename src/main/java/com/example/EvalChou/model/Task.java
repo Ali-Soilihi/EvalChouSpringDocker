@@ -1,4 +1,4 @@
-package com.example.EvalChou;
+package com.example.EvalChou.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,19 +23,6 @@ public class Task {
     @JoinColumn(name = "collaborater_id")
     private Collaborater collaborater_id;
 
-    //overide equals pour prendre en compte tous sauf les id
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return title.equals(task.title) && description.equals(task.description) && priority == task.priority && realized.equals(task.realized);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, description, priority, realized);
-    }
 
     public Integer getId() {
         return id;
@@ -101,10 +88,8 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", priority=" + priority +
                 ", realized=" + realized +
-                ", taskList=" + task_list_id +
-                ", collaborater=" + collaborater_id +
+                ", task_list_id=" + task_list_id +
+                ", collaborater_id=" + collaborater_id +
                 '}';
     }
-
-
 }

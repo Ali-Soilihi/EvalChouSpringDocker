@@ -1,5 +1,6 @@
-package com.example.EvalChou;
+package com.example.EvalChou.repository;
 
+import com.example.EvalChou.model.TaskList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

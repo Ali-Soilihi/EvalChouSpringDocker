@@ -1,4 +1,4 @@
-package com.example.EvalChou;
+package com.example.EvalChou.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -38,13 +38,13 @@ public class TaskList {
     public void setTaskListBox(List<Task> taskListBox) {
         this.taskListBox = taskListBox;
     }
-
-    @Override
-    public String toString() {
-        return "TaskList{" +
-                "id=" + id +
-                ", name='" + task_list_name + '\'' +
-                ", taskList=" + taskListBox +
-                '}';
-    }
+//
+//    @Override
+//    public String toString() {
+//        return "TaskList{" +
+//                "id=" + id +
+//                ", task_list_name='" + task_list_name + '\'' +
+//                ", taskListBox=" + taskListBox +
+//                '}';
+//    }
 }

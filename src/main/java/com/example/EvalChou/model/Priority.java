@@ -1,4 +1,4 @@
-package com.example.EvalChou;
+package com.example.EvalChou.model;
 
 public enum Priority {
     HIGH,

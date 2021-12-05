@@ -1,4 +1,4 @@
-package com.example.EvalChou;
+package com.example.EvalChou.model;
 
 import javax.persistence.*;
 
@@ -10,8 +10,6 @@ public class Collaborater {
     private String last_name;
     private String first_name;
     private String function;
-//    @Transient
-//    private TaskList taskList;
 
     public Integer getId() {
         return id;
@@ -45,13 +43,13 @@ public class Collaborater {
         this.function = function;
     }
 
-    @Override
-    public String toString() {
-        return "Collaborater{" +
-                "collaboraterId=" + id +
-                ", lastName='" + last_name + '\'' +
-                ", firstName='" + first_name + '\'' +
-                ", function='" + function + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Collaborater{" +
+//                "id=" + id +
+//                ", last_name='" + last_name + '\'' +
+//                ", first_name='" + first_name + '\'' +
+//                ", function='" + function + '\'' +
+//                '}';
+//    }
 }
