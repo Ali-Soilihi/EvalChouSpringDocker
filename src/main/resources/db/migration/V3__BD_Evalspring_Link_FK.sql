@@ -1,23 +1,3 @@
---UPDATE liste de taches
-UPDATE  task_list
-SET
-taskListBox=1
-WHERE id=1;
-
-UPDATE  task_list
-SET
-taskListBox=2
-WHERE id=2;
-
-UPDATE  task_list
-SET
-taskListBox=3
-WHERE id=3;
-
-UPDATE  task_list
-SET
-taskListBox=4
-WHERE id=4;
 --*****************************************************************
 --UPDATE les de taches
 
@@ -44,6 +24,31 @@ SET
 task_list_id=4,
 collaborater_id=NULL
 WHERE id=4;
+--4 autre a surprimé plus tard
+
+UPDATE  Task
+SET
+task_list_id=1,
+collaborater_id=NULL
+WHERE id=5;
+
+UPDATE  Task
+SET
+task_list_id=1,
+collaborater_id=NULL
+WHERE id=6;
+
+UPDATE  Task
+SET
+task_list_id=1,
+collaborater_id=NULL
+WHERE id=7;
+
+UPDATE  Task
+SET
+task_list_id=1,
+collaborater_id=NULL
+WHERE id=8;
 
 
 

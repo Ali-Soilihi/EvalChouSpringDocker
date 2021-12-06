@@ -11,8 +11,7 @@ public class TaskList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String task_list_name;
-    @OneToMany(fetch = FetchType.LAZY,targetEntity=Task.class, mappedBy= "id")
-//    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,targetEntity=Task.class, mappedBy= "task_list_id")
     private List<Task> taskListBox;
 
     public Integer getId() {

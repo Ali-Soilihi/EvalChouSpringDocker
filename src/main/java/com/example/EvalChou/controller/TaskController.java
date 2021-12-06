@@ -6,6 +6,8 @@ import com.example.EvalChou.model.TaskList;
 import com.example.EvalChou.repository.CollaboraterRepository;
 import com.example.EvalChou.repository.TaskListRepository;
 import com.example.EvalChou.repository.TaskRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -174,7 +176,7 @@ public class TaskController {
     }
     /*todo: 5-Je veux pouvoir supprimer une tâche.*/
     @PostMapping("/dell/taskid/{id}")
-    public List<Task> delltaskbyid(@PathVariable("id") Integer idtask) {
+    public ResponseEntity <List<Task>> delltaskbyid(@PathVariable("id") Integer idtask) {
 
         boolean findinBDD = false;
 //      recherche la tache si elle est en BDD la suprime
@@ -190,20 +192,21 @@ public class TaskController {
 // si aucune tache n'est trouvé renvoie null
         if (!findinBDD) {
 
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).varyBy("L'entité a pas été trouvé bisous <3").build();
         }
 //      suite recherché puis renvoyer la liste des tache sans celle qui viens d'etre suprimé
         tasks = taskRepository.findAll();
 
 
-        return tasks;
+        return ResponseEntity.ok(tasks);
     }
 
     /*todo:9-Je souhaite pouvoir assigner la tâche à un collaborateur ou à l'inverse indiquer qu'elle n'est assignée à personne*/
     @PostMapping("/update/taskid/{id}/collaborater/{collaborater_id}")
-    public Task uspdatecollaboraterbyid(@PathVariable("id") Integer idtask, @PathVariable("collaborater_id") Integer idcollaborater) {
+    public ResponseEntity <Task> uspdatecollaboraterbyid(@PathVariable("id") Integer idtask, @PathVariable("collaborater_id") Integer idcollaborater) {
 
-        Task taskRemider = new Task();
+        boolean updateIsOk = false;
+        Task taskRemider=new Task();
         Collaborater collaboraterRemider = new Collaborater();
 
         collaboraters = collaboraterRepository.findAll();
@@ -217,24 +220,30 @@ public class TaskController {
 
         if (collaboraterRemider.getId() == null) {
 
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .header("erreur 404", " L'entité \"collaborater\" a pas été trouvé en basse désolé")
+                    .build();
         }
 
         tasks = taskRepository.findAll();
         for (Task taskBDD : tasks) {
 
-            if (taskBDD.getId().equals(idtask) && taskBDD.getCollaborater_id() == null) {
-                taskRemider = taskBDD;
-                taskRemider.setCollaborater_id(collaboraterRemider);
+            if (taskBDD.getId().equals(idtask) && !taskBDD.getCollaborater_id().getId().equals(collaboraterRemider.getId())) {
 
-                taskRepository.save(taskRemider);
+                taskRemider=taskBDD;
+                taskBDD.setCollaborater_id(collaboraterRemider);
+                taskRepository.save(taskBDD);
+                updateIsOk = true;
+
             }
 
         }
 
-        if (taskRemider.getCollaborater_id() == null) {
+        if (!updateIsOk) {
 
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .header("erreur 404", " L'entité \"tache\" deja assigné à ce \"collaborater\" ou n'est pas en base ")
+                    .build();
         }
 
 
@@ -242,18 +251,55 @@ public class TaskController {
         for (Task taskBDD : tasks) {
             if (taskBDD.equals(taskRemider)) {
 
-                return taskBDD;
+                return ResponseEntity.ok(taskBDD);
             }
 
         }
 
 
-        return taskRemider;
+        return  ResponseEntity.ok(taskRemider);
     }
 
 
 
+    /*todo:9-Je souhaite pouvoir assigner la tâche à un collaborateur ou à l'inverse indiquer qu'elle n'est assignée à personne*/
+    @PostMapping("/update/taskid/{id}/collaborater/null")
+    public ResponseEntity <Task> uspdatetasknull(@PathVariable("id") Integer idtask) {
+        boolean updateIsOk = false;
+        Task taskRemider=new Task();
 
+        tasks = taskRepository.findAll();
+        for (Task taskBDD : tasks) {
+
+            if (taskBDD.getId().equals(idtask) && taskBDD.getCollaborater_id()!=null) {
+                taskBDD.setCollaborater_id(null);
+                taskRepository.save(taskBDD);
+                updateIsOk = true;
+
+            }
+
+        }
+
+        if (!updateIsOk) {
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .header("erreur 404", " L'entité \"tache\" deja assigné à personne(null) ou n'est pas en base ")
+                    .build();
+        }
+
+
+        tasks = taskRepository.findAll();
+        for (Task taskBDD : tasks) {
+            if (taskBDD.getId().equals(idtask)) {
+
+                return ResponseEntity.ok(taskBDD);
+            }
+
+        }
+
+
+        return  ResponseEntity.ok(taskRemider);
+    }
 
 
 

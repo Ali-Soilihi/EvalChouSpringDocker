@@ -23,8 +23,7 @@ collaborater_id int
 -- Création de la table Liste de taches
 CREATE TABLE task_list(
 id serial PRIMARY KEY,
-task_list_name varchar,
-taskListBox int
+task_list_name varchar
 
 );
 
@@ -32,8 +31,7 @@ taskListBox int
 ALTER TABLE Task ADD CONSTRAINT fk_taskList FOREIGN KEY (task_list_id) REFERENCES task_list(id);
 ALTER TABLE Task ADD CONSTRAINT fk_collaborater FOREIGN KEY (collaborater_id) REFERENCES Collaborater(id);
 
--- CCreate foreign keys for table TaskList : taskList
-ALTER TABLE task_list ADD CONSTRAINT fk_taskList FOREIGN KEY (taskListBox) REFERENCES Task(id);
+
 -- DROP SCHEMA public CASCADE;
 -- CREATE SCHEMA public;
 

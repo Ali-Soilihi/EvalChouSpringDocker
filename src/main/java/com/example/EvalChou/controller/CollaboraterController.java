@@ -4,6 +4,8 @@ import com.example.EvalChou.model.Collaborater;
 import com.example.EvalChou.model.Task;
 import com.example.EvalChou.model.TaskList;
 import com.example.EvalChou.repository.CollaboraterRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class CollaboraterController {
 /*todo:8-Je souhaite pouvoir créer ou supprimer un collaborateur (qui a un prénom, un nom, une fonction dans l'entreprise)*/
     @PostMapping("/register")
 
-    public Collaborater addcollaborater(@RequestBody Collaborater collaborater) {
+    public ResponseEntity <Collaborater> addcollaborater(@RequestBody Collaborater collaborater) {
 
         collaboraters = collaboraterRepository.findAll();
         for (Collaborater collaboraterBDD : collaboraters) {
@@ -48,7 +50,9 @@ public class CollaboraterController {
 
             ) {
 
-                return null;
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .header("erreur 409 Conflict", " L'entité est deja en base faut pas faire des doublons comme ça")
+                        .build();
             }
 
         }
@@ -60,18 +64,17 @@ public class CollaboraterController {
         for (Collaborater collaboraterBDD : collaboraters) {
             if (collaboraterBDD.equals(collaborater)) {
 
-                return collaboraterBDD;
+               return ResponseEntity.ok(collaboraterBDD);
             }
 
         }
 
-
-        return collaborater;
+        return ResponseEntity.ok(collaborater);
     }
 
 /*todo:8-Je souhaite pouvoir créer ou supprimer un collaborateur (qui a un prénom, un nom, une fonction dans l'entreprise)*/
     @PostMapping("/dell/collaboraterid/{collaborater_id}")
-    public List<Collaborater> delltaskbyid(@PathVariable("id") Integer idcollaborater) {
+    public ResponseEntity <List<Collaborater>> delltaskbyid(@PathVariable("collaborater_id") Integer idcollaborater) {
 
         boolean findinBDD = false;
 
@@ -89,13 +92,15 @@ public class CollaboraterController {
 
         if (!findinBDD) {
 
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .header("erreur 404", " L'entité a pas été trouvé en basse désolé")
+                    .build();
         }
 
         collaboraters = collaboraterRepository.findAll();
 
 
-        return collaboraters;
+        return ResponseEntity.ok(collaboraters);
     }
 
 
