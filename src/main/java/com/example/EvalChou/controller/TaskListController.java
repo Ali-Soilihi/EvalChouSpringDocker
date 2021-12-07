@@ -229,9 +229,11 @@ public class TaskListController {
         }
 
         if (taskRemider.getId() == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .header("erreur 400", " La liste doit être vide avant d'être supprimée ")
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .header("erreur 404", " L'entité a pas été trouvé en basse désolé")
                     .build();
+
         }
 
         taskLists = taskListRepository.findAll();
@@ -240,7 +242,9 @@ public class TaskListController {
             if (taskListBDD.getId().equals(idtaskList)) {
                 if (taskListBDD.getTaskListBox().contains(taskRemider)) {
 
-                    return null;
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .header("erreur 404", " L'entité \"tache\" deja assigné à cette liste de tache ")
+                            .build();
                 }
                 taskListBoxremider = taskListBDD.getTaskListBox();
 

@@ -43,6 +43,7 @@ public class TaskController {
         return tasks;
     }
 
+
     /*todo:2-Je veux pouvoir créer une tâche dans la liste avec un intitulé, une description, une priorité (HAUTE, MOYENNE, BASSE) et indiqué si elle est réalisée ou non.*/
     // /!\ une tache dois forcement etre lié a une id de task list(sa forenkey) donné dans l'url sinon il renvoie null
     @PostMapping("/register/{task_list_id}")
@@ -66,7 +67,7 @@ public class TaskController {
         if (task.getTask_list_id() == null) {
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .header("erreur 404", " L'entité a pas été trouvé en basse désolé")
+                    .header("erreur 404", " L'entité \"tasklist\" a pas été trouvé en basse désolé")
                     .build();
         }
 
@@ -119,25 +120,27 @@ public class TaskController {
         for (Task taskBDD : tasks) {
 //          si l'idée en parametre est bonne et si la réalisation en BDD et differente de celle en parametre
             if (taskBDD.getId().equals(idtask) && !taskBDD.getRealized().equals(realized)) {
-                taskRemider = taskBDD;
-                taskRemider.setRealized(realized);
 
-                taskRepository.save(taskRemider);
+                taskRemider=taskBDD;
+                taskBDD.setRealized(realized);
+
+                taskRepository.save(taskBDD);
             }
 
         }
-//      renvois null si aucun objet en BDD n'est lié a l'id donné en parametre
-        if (taskRemider.getRealized() == null) {
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .header("erreur 404", " L'entité a pas été trouvé en basse désolé")
+//      si sa réalisation est la même qu'en parametre renvoie null
+        if (taskRemider.getRealized() != realized) {
+
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .header("erreur 409 Conflict", " L'entité est deja a cette valeur en base faut pas faire des doublons comme ça")
                     .build();
         }
 
 //      recherche une deuxieme fois pour affiché un objet propre
         tasks = taskRepository.findAll();
         for (Task taskBDD : tasks) {
-            if (taskBDD.equals(taskRemider)) {
+            if (taskBDD.getId().equals(idtask)) {
 
                 return ResponseEntity.ok(taskBDD);
 
@@ -152,6 +155,7 @@ public class TaskController {
     /*todo:4-Je veux pouvoir mettre à jour l'intitulé et la description d'une tâche.*/
     @PostMapping("/update/taskid/{id}/title/{title}")
     public ResponseEntity <Task> uspdatetitlebyid(@PathVariable("id") Integer idtask, @PathVariable("title") String title) {
+
 
         Task taskRemider = new Task();
 
@@ -206,7 +210,7 @@ public class TaskController {
 // si aucune tache n'est trouvé renvoie null
         if (!findinBDD) {
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).varyBy("L'entité a pas été trouvé bisous <3").build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).varyBy("L'entité a pas été trouvé en basse désolé").build();
         }
 //      suite recherché puis renvoyer la liste des tache sans celle qui viens d'etre suprimé
         tasks = taskRepository.findAll();
