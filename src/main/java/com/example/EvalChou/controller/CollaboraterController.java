@@ -35,7 +35,7 @@ public class CollaboraterController {
 
 /*todo:8-Je souhaite pouvoir créer ou supprimer un collaborateur (qui a un prénom, un nom, une fonction dans l'entreprise)*/
     @PostMapping("/register")
-
+    /** crée un collaborateur avec ces attribue **/
     public ResponseEntity <Collaborater> addcollaborater(@RequestBody Collaborater collaborater) {
 
         collaboraters = collaboraterRepository.findAll();
@@ -74,6 +74,7 @@ public class CollaboraterController {
 
 /*todo:8-Je souhaite pouvoir créer ou supprimer un collaborateur (qui a un prénom, un nom, une fonction dans l'entreprise)*/
     @PostMapping("/dell/collaboraterid/{collaborater_id}")
+    /** suprime un collaborateur avec sont id **/
     public ResponseEntity <List<Collaborater>> delltaskbyid(@PathVariable("collaborater_id") Integer idcollaborater) {
 
         boolean findinBDD = false;

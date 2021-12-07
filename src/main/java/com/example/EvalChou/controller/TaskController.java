@@ -44,13 +44,14 @@ public class TaskController {
     }
 
     /*todo:2-Je veux pouvoir créer une tâche dans la liste avec un intitulé, une description, une priorité (HAUTE, MOYENNE, BASSE) et indiqué si elle est réalisée ou non.*/
-    // /!\ une tache dois forcement etre lié a une id de task list donné dans l'url sinon il renvoie null
+    // /!\ une tache dois forcement etre lié a une id de task list(sa forenkey) donné dans l'url sinon il renvoie null
     @PostMapping("/register/{task_list_id}")
-    public Task addTask(@RequestBody Task task, @PathVariable("task_list_id") Integer task_list_id) {
+    /** créé la tache avec sont id de forenkey en parametre **/
+    public ResponseEntity <Task> addTask(@RequestBody Task task, @PathVariable("task_list_id") Integer task_list_id) {
 //       pour sauvegarder la tasklist lié a l'id en parametre
         taskLists = taskListRepository.findAll();
         for (TaskList taskListBDD : taskLists) {
-//          si il ta une tasklist en BDD qui est a la même id que celle en parametre alors:
+//          si il y'a une tasklist en BDD qui est a la même id que celle en parametre alors:
             if (taskListBDD.getId().equals(task_list_id)) {
 
                 taskListBDD.getTaskListBox().add(task);
@@ -64,10 +65,12 @@ public class TaskController {
 //       si la forenkey dans task est toujour null donc aucune tasklit na été trouvé renvois null
         if (task.getTask_list_id() == null) {
 
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .header("erreur 404", " L'entité a pas été trouvé en basse désolé")
+                    .build();
         }
 
-//      tasklit ok maitenant on regarde en BDD si la task est deja presente si c'est le cas renvoie null
+//      tasklit ok maitenant on regarde en BDD si la task est deja presente si c'est le cas renvoie err 409
         tasks = taskRepository.findAll();
         for (Task taskBDD : tasks) {
 //          verifie tous les atribue sauf forenkey et id
@@ -81,7 +84,9 @@ public class TaskController {
                             taskBDD.getRealized().equals(task.getRealized())
             ) {
 
-                return null;
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .header("erreur 409 Conflict", " L'entité est deja en base faut pas faire des doublons comme ça")
+                        .build();
             }
 
         }
@@ -93,17 +98,20 @@ public class TaskController {
         for (Task taskBDD : tasks) {
             if (taskBDD.equals(task)) {
 
-                return taskBDD;
+                return ResponseEntity.ok(taskBDD);
+
             }
 
         }
 
 //        retour qui ser a rien mais au pire des cas renvois un objet vide
-        return task;
+        return ResponseEntity.ok(task);
     }
     /*todo: 3-Je veux pouvoir indiquer qu'une tâche a été réalisée, ou au contraire, qu'une tâche réalisée ne l'est finalement pas.*/
     @PostMapping("/update/taskid/{id}/realized/{realized}")
-    public Task uspdaterealizedbyid(@PathVariable("id") Integer idtask, @PathVariable("realized") Boolean realized) {
+    /** met a jour la réalisation de la tache attention si la variable (realized)
+     * n'est pas un boulééen true ou false en toute lettre vous aurais une erreur **/
+    public ResponseEntity <Task> uspdaterealizedbyid(@PathVariable("id") Integer idtask, @PathVariable("realized") Boolean realized) {
 
         Task taskRemider = new Task();
         //pour sauvegarder la tache lié a l'id en parametre et met a jour sa "realisation"
@@ -121,7 +129,9 @@ public class TaskController {
 //      renvois null si aucun objet en BDD n'est lié a l'id donné en parametre
         if (taskRemider.getRealized() == null) {
 
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .header("erreur 404", " L'entité a pas été trouvé en basse désolé")
+                    .build();
         }
 
 //      recherche une deuxieme fois pour affiché un objet propre
@@ -129,18 +139,19 @@ public class TaskController {
         for (Task taskBDD : tasks) {
             if (taskBDD.equals(taskRemider)) {
 
-                return taskBDD;
+                return ResponseEntity.ok(taskBDD);
+
             }
 
         }
 
 //      retour qui ser a rien mais au pire des cas renvois un objet vide
-        return taskRemider;
+        return ResponseEntity.ok(taskRemider);
     }
 
     /*todo:4-Je veux pouvoir mettre à jour l'intitulé et la description d'une tâche.*/
     @PostMapping("/update/taskid/{id}/title/{title}")
-    public Task uspdatetitlebyid(@PathVariable("id") Integer idtask, @PathVariable("title") String title) {
+    public ResponseEntity <Task> uspdatetitlebyid(@PathVariable("id") Integer idtask, @PathVariable("title") String title) {
 
         Task taskRemider = new Task();
 
@@ -159,21 +170,24 @@ public class TaskController {
 //      renvois null si aucun objet en BDD n'est lié au titre donné en parametre
         if (taskRemider.getTitle() == null) {
 
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .header("erreur 404", " L'entité a pas été trouvé en basse désolé")
+                    .build();
         }
 //      recherche une deuxieme fois pour affiché un objet propre
         tasks = taskRepository.findAll();
         for (Task taskBDD : tasks) {
             if (taskBDD.equals(taskRemider)) {
 
-                return taskBDD;
+                return ResponseEntity.ok(taskBDD);
             }
 
         }
 
 //      retour qui ser a rien mais au pire des cas renvois un objet vide
-        return taskRemider;
+        return ResponseEntity.ok(taskRemider);
     }
+
     /*todo: 5-Je veux pouvoir supprimer une tâche.*/
     @PostMapping("/dell/taskid/{id}")
     public ResponseEntity <List<Task>> delltaskbyid(@PathVariable("id") Integer idtask) {
@@ -203,6 +217,7 @@ public class TaskController {
 
     /*todo:9-Je souhaite pouvoir assigner la tâche à un collaborateur ou à l'inverse indiquer qu'elle n'est assignée à personne*/
     @PostMapping("/update/taskid/{id}/collaborater/{collaborater_id}")
+    /** assigne une tache a un collaborateur **/
     public ResponseEntity <Task> uspdatecollaboraterbyid(@PathVariable("id") Integer idtask, @PathVariable("collaborater_id") Integer idcollaborater) {
 
         boolean updateIsOk = false;
@@ -264,6 +279,7 @@ public class TaskController {
 
     /*todo:9-Je souhaite pouvoir assigner la tâche à un collaborateur ou à l'inverse indiquer qu'elle n'est assignée à personne*/
     @PostMapping("/update/taskid/{id}/collaborater/null")
+    /** assigne une tache a un personne (null) **/
     public ResponseEntity <Task> uspdatetasknull(@PathVariable("id") Integer idtask) {
         boolean updateIsOk = false;
         Task taskRemider=new Task();

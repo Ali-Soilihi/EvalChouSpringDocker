@@ -39,14 +39,16 @@ public class TaskListController {
 
     /*todo: 1-Je veux pouvoir créer une liste de tâches, en lui donnant un nom.*/
     @PostMapping("/register")
-    public TaskList addTasklist(@RequestBody TaskList taskList) {
+    public ResponseEntity <TaskList> addTasklist(@RequestBody TaskList taskList) {
 
-//      recherche le nom de la liste si deja presente dans la bdd renvois null
+//      recherche le nom de la liste si deja presente dans la bdd reponse http
         taskLists = taskListRepository.findAll();
         for (TaskList tasklistBDD : taskLists) {
             if (tasklistBDD.getTask_list_name().equals(taskList.getTask_list_name())) {
 
-                return null;
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .header("erreur 404", " L'entité a pas été trouvé en basse désolé")
+                        .build();
             }
 
         }
@@ -58,23 +60,24 @@ public class TaskListController {
         for (TaskList tasklistBDD : taskLists) {
             if (tasklistBDD.getTask_list_name().equals(taskList.getTask_list_name())) {
 
-                return tasklistBDD;
+                return ResponseEntity.ok(tasklistBDD);
             }
 
         }
 
-//      retour qui ser a rien mais au pire des cas renvois un objet vide
-        return taskList;
+//      retour qui sert a rien mais au pire des cas renvois un objet vide
+        return ResponseEntity.ok(taskList);
     }
 
 /*todo:6-Je veux pouvoir récupérer toutes les tâches d'une liste donnée en paramètre, triées dans l'ordre de priorité,
    avec un paramètre me permettant de dire si je veux également les tâches réalisées*/
 /** ici on ordonne par priorité et si "realisé" ou pas  **/
     @GetMapping("{id}/taskListBox/all/realized/{realized}")
-    public List<Task> gettaskListBoxOrderbyrealised(@PathVariable("id") Integer idtaskList,@PathVariable("realized") boolean realized) {
+    public ResponseEntity <List<Task>> gettaskListBoxOrderbyrealised(@PathVariable("id") Integer idtaskList,@PathVariable("realized") boolean realized) {
         TaskList taskListremider = new TaskList();
         List<Task> taskListOrder = new ArrayList<>();
 
+//      recherche dans la BDD la bonne list de tache
         taskLists = taskListRepository.findAll();
         for (TaskList tasklistBDD : taskLists) {
             if (tasklistBDD.getId().equals(idtaskList)) {
@@ -82,7 +85,8 @@ public class TaskListController {
             }
         }
 
-        tasks = taskRepository.findTaskordebyTaskrealized(realized,taskListremider);
+//      3 boucle pour les ranger
+        tasks = taskRepository.findTaskordebyTaskrealized(realized,taskListremider);//methode custom pour recuperé toute les tache une listebox si il sont réalisé ou pas
         for (Task taskBDD : tasks) {
             if (taskBDD.getPriority().toString().equals("HIGH")) {
                 taskListOrder.add(taskBDD);
@@ -99,17 +103,18 @@ public class TaskListController {
             }
         }
 
+//      retour de la liste trié
+        return ResponseEntity.ok(taskListOrder);
 
-        return taskListOrder;
     }
 
 /*todo:6-Je veux pouvoir récupérer toutes les tâches d'une liste donnée en paramètre, triées dans l'ordre de priorité,
    avec un paramètre me permettant de dire si je veux également les tâches réalisées*/
     /** ici on affiche tous les tache d'une tache list **/
     @GetMapping("{id}/taskListBox/all")
-    public List<Task> gettaskListBox(@PathVariable("id") Integer idtaskList) {
+    public ResponseEntity  <List<Task>> gettaskListBox(@PathVariable("id") Integer idtaskList) {
         List<Task> taskListBoxremider = new ArrayList<>();
-
+//      recherche la box de liste et l'affiche
         taskLists = taskListRepository.findAll();
         for (TaskList tasklistBDD : taskLists) {
             if (tasklistBDD.getId().equals(idtaskList)) {
@@ -117,16 +122,19 @@ public class TaskListController {
             }
 
         }
-        return taskListBoxremider;
+//      retour http et l'entité
+        return ResponseEntity.ok(taskListBoxremider);
     }
     /*todo:7-Je veux pouvoir supprimer une liste de tâches. Si la liste n'est pas vide, je vous laisse le choix :
        supprimer la liste et toutes les tâches associées, ou renvoyer un message avec une erreur 400 "La liste doit être vide avant d'être supprimée".*/
     @PostMapping("/dell/tasklistid/{id}")
-    public ResponseEntity<List<TaskList>> delltaskListbyid(@PathVariable("id") Integer idtaskList) {
+    /** suprime la liste de tache seulement si elle est vide **/
+    public ResponseEntity <List<TaskList>> delltaskListbyid(@PathVariable("id") Integer idtaskList) {
 
         List<Task> taskListBoxremider = new ArrayList<>();
         boolean findinBDD = false;
 
+//      recherche la tachelist et ces tache lié si elle est en BDD les suprime tous
         taskLists = taskListRepository.findAll();
         for (TaskList tasklistBDD : taskLists) {
             if (tasklistBDD.getId().equals(idtaskList)) {
@@ -134,7 +142,7 @@ public class TaskListController {
             }
 
         }
-
+//      la verification si la liste est vide
         if (taskListBoxremider.size()!=0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .header("erreur 400", " La liste doit être vide avant d'être supprimée ")
@@ -148,12 +156,13 @@ public class TaskListController {
             if (tasklistBDD.getId().equals(idtaskList)) {
                 findinBDD = true;
 
-                taskRepository.dellbyTaskListid(tasklistBDD);
+                taskRepository.dellbyTaskListid(tasklistBDD);//methode custom pour faire un delecte cascade des taches lié a une listebox
                 taskListRepository.deleteById(idtaskList);
             }
 
         }
 
+        //regarde la reponse http
         if (!findinBDD) {
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -164,13 +173,14 @@ public class TaskListController {
 
         taskLists = taskListRepository.findAll();
 
-
+        //retour de la table sans celle qui est suprimé
         return ResponseEntity.ok(taskLists);
     }
     /*todo:7-Je veux pouvoir supprimer une liste de tâches. Si la liste n'est pas vide, je vous laisse le choix :
        supprimer la liste et toutes les tâches associées, ou renvoyer un message avec une erreur 400 "La liste doit être vide avant d'être supprimée".*/
     @PostMapping("/dell/tasklistid/{id}/force")
-    public ResponseEntity<List<TaskList>> delltaskListbyidforce(@PathVariable("id") Integer idtaskList) {
+    /** suprimé sans verification **/
+    public ResponseEntity <List<TaskList>> delltaskListbyidforce(@PathVariable("id") Integer idtaskList) {
 
         boolean findinBDD = false;
 
@@ -181,12 +191,12 @@ public class TaskListController {
             if (tasklistBDD.getId().equals(idtaskList)) {
                 findinBDD = true;
 
-                taskRepository.dellbyTaskListid(tasklistBDD);
+                taskRepository.dellbyTaskListid(tasklistBDD);//methode custom pour faire un delecte cascade des taches lié a une listebox
                 taskListRepository.deleteById(idtaskList);
             }
 
         }
-
+//      la verification si la liste est vide
         if (!findinBDD) {
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -197,14 +207,15 @@ public class TaskListController {
 
         taskLists = taskListRepository.findAll();
 
-
+        //retour de la table sans celle qui est suprimé
         return ResponseEntity.ok(taskLists);
     }
 
 /** les methode suivante n'on pas été demander dans les question **/
 
     @PutMapping("{id}/taskListBox/update/task/{idtask}")
-    public List<Task> addtaskintaskListBox(@PathVariable("id") Integer idtaskList, @PathVariable("idtask") Integer idtask) {
+    /** lie une liste avec l'entité tasklist (je commente pas trop vus que c'est pas demander) **/
+    public ResponseEntity <List<Task>> addtaskintaskListBox(@PathVariable("id") Integer idtaskList, @PathVariable("idtask") Integer idtask) {
         Task taskRemider = new Task();
         List<Task> taskListBoxremider = new ArrayList<>();
 
@@ -218,8 +229,9 @@ public class TaskListController {
         }
 
         if (taskRemider.getId() == null) {
-
-            return null;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .header("erreur 400", " La liste doit être vide avant d'être supprimée ")
+                    .build();
         }
 
         taskLists = taskListRepository.findAll();
@@ -244,8 +256,7 @@ public class TaskListController {
 
         }
 
-
-        return taskListBoxremider;
+        return ResponseEntity.ok(taskListBoxremider);
     }
 
 

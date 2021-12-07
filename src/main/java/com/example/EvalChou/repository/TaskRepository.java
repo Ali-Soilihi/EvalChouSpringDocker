@@ -13,10 +13,11 @@ import java.util.List;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task,Integer> {
-    //custom methode update
+    //methode custom pour recuperé toute les tache une listebox si il sont réalisé ou pas
     @Query("SELECT t FROM Task t WHERE t.realized = :realized and t.task_list_id = :task_list_id ORDER BY t.priority ASC")
     public List<Task> findTaskordebyTaskrealized(@Param("realized")Boolean realized, @Param("task_list_id")TaskList task_list_id);
 
+    //methode custom pour faire un delecte cascade des taches lié a une listebox
     @Query("DELETE FROM Task t WHERE t.task_list_id = :task_list_id ")
     @Transactional
     @Modifying
